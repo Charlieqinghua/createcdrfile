@@ -1,0 +1,65 @@
+package makeFile;
+
+import java.io.IOException;
+import java.util.Observer;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
+public class CreateCdrFile implements Runnable {
+
+	/**
+	 * @param args
+	 * @throws Throwable 
+	 */
+	createFile  file=new createFile();
+	make m=new make();
+	long count=1000000000;
+	public String CreateCdr(String name) throws Throwable
+	{
+		file.makefile("c:\\testFile\\"+"cdr201612"+name+".txt");
+		
+		
+		return "end "+"c:\\testFile\\"+"cdr201612"+name+".txt";
+	}
+	public void writeFile()
+	{
+		for(long i=0; i<count;i++)
+		{	
+			String row=m.makeRow();
+			//System.out.println(row);
+			
+			try {
+				file.inputRow(row);
+			} catch (Throwable e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	public void run()
+	{
+		try {
+			writeFile();
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public static void main(String[] args) throws Throwable {
+		// TODO Auto-generated method stub
+		 ExecutorService writerService;
+		 //writerService = Executors.newFixedThreadPool(10);
+		
+		
+		for (int i=0;i<10;i++){
+			CreateCdrFile m=new CreateCdrFile();
+			m.CreateCdr(""+i);
+		Thread t=new Thread(m);
+		t.start();
+		}
+		
+		
+
+	}
+
+}
